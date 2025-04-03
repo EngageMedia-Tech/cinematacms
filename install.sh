@@ -88,33 +88,6 @@ python manage.py migrate
 python manage.py loaddata fixtures/encoding_profiles.json
 python manage.py loaddata fixtures/categories.json
 python manage.py collectstatic --noinput
-# Create directory for default images if it doesn't exist
-mkdir -p /home/cinemata/cinematacms/static/images/
-
-# Create a default user image (a simple base64 encoded small PNG)
-cat > /home/cinemata/cinematacms/static/images/default_user.png << 'EOL'
-iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAD
-sQAAA7EB9YPtSQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAABD9SURBVHic7Z15
-eBRF1sbfTneHkAQSwhLCvkRQdhQVlx1xQUZRQEBBFxA/UBFRFDcQFHUUEFRWWQRUQFBRQEBBNtlB2fct
-5wgJW8KW0U53ZZQCKDLEWHURQNVdZoNdZ4JFFWTZ4gDdndFcuiLULtvbIqNfgSRJkiRJkiRJkiRJkiRJ
-kiRJkiRJkiRJkiRJkiRJkiRJkiQcROwDJbdoQjQDUBtACIInoUdZ/63
-6wOoBiAeQCyAagBqFb223xgIILjs7+CyPwUACgGUFP23 GEC+hf8WArgF4CaA6wCuAbgM4AKAC2X/
-zgG4BOC2h+6/UpMK4HkAvwD4C4DF5J+LAJYDmApgIIDaHrkbSYFEAA8BWAzgPJQT1dmfKwB+AjAGQIIb
-76vCkAJgNoDjEE9wa382AZgJoIVb7tLH8QfwCIClfgvtCO/hQB+A7AcQBRVv3pdoDGAGgKMQX1BnfzJBP 
-qZAUCPUYfq9E5TaYucv9bT4GkAzRBfULU/2wHMATAXQF0VbOMj1AWwHmQYEl0QT/+cBTAbQF0Y7ayGAE5B
-fEFE/5wGGdN9hu4AjgJ8duxnDMBRkH0EnycIwMcAiiB+c/3t5wCASfDxjSI/AM8AyIH4zfX3n+MgezzBVlfx
-ABZDLhLZBGLDWPQpA+XFQAQCcREIZJRYBCEwAgxMO5DjXE6nIcQVE1L4jEAtHIcWQH+qOnDpwGcZPQrp4
-W8V+Jw+p+mMfqUGgDkdRu8IhLgkQjwZrUbhyI+puCx+LoXUQPypweGF5lIfEwD2pR4U+dM0gJ/VWCwwys
-lvEvD7YhzgaxogTmSiZ0R/VkOxQBMm/1VJ+E5Zg3hGY7EA7/hvMPm9Uo1Rh9GPpAH9GgNaMv61MvmdUof
-Rj0wAmvNwFVgvm75nWPNetVlgNYeA51WxyOUZGQN6MRrdQPTnlxj9yBTwcaTmYi+K5BoZA3oZGUZfP6Xg
-tewBeEsgEwC8cgjox+j3D8hikJISWAA+DWSuC2CNSMgE4FMAHwEYzvjdX0CGgipodvsVHRfLqpA9QIWnPa
-PPS5C9QIXnAUafpyF7gApPe0afv0P2ABUeliHgfLmL8wNIsT7AGUafTZ30AJgSQBaEVQBaczpcBzkQVGHgn
-kFkgQj6Nt4Kfzd7sUaHK9rnGdSOWTfEQIwZ1jXOegtRLsTQxnmLANkDVHgagxSE4CEHsheo8NRj9HkRcixQ
-4WnI6PMi5GJQhaceo89cyAWhmL/f6WwbAviKn2GSh1HrEIjsASo8rKuBB8vuoQcpNUf
-EOL
-
-# Ensure correct permissions are set
-chown -R www-data:www-data /home/cinemata/cinematacms/static/images/
 
 ADMIN_PASS=`python -c "import secrets;chars = 'abcdefghijklmnopqrstuvwxyz0123456789';print(''.join(secrets.choice(chars) for i in range(10)))"`
 echo "from users.models import User; User.objects.create_superuser('admin', 'admin@example.com', '$ADMIN_PASS')" | python manage.py shell
