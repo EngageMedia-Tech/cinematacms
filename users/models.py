@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, ResizeToFit
-import os
+
 import files.helpers as helpers
 from files.lists import video_countries
 from files.models import Media, Tag
@@ -83,10 +83,9 @@ class User(AbstractUser):
         return True
 
     def thumbnail_url(self):
-    if self.logo and hasattr(self.logo, 'path') and os.path.exists(self.logo.path):
-        return helpers.url_from_path(self.logo.path)
-    # Return a default static image path when no logo exists
-    return "/static/images/default_user.png"
+        if self.logo:
+            return helpers.url_from_path(self.logo.path)
+        return None
 
     def banner_thumbnail_url(self):
         c = self.channels.filter().order_by("add_date").first()
