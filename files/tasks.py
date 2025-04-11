@@ -1002,14 +1002,20 @@ def task_sent_handler(sender=None, headers=None, body=None, **kwargs):
     return True
 
 
+import shlex
+
 def kill_ffmpeg_process(filepath):
-    # this is not ideal, ffmpeg pid could be linked to the Encoding object
-    cmd = "ps aux|grep 'ffmpeg'|grep %s|grep -v grep |awk '{print $2}'" % filepath
-    result = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
+    # Validate the filepath to ensure it is a valid file path
+    if not os.path.isfile(filepath):
+        raise ValueError("Invalid file path")
+
+    # Use shlex.split to safely construct command arguments
+    cmd = f"ps aux | grep 'ffmpeg' | grep {shlex.quote(filepath)} | grep -v grep | awk '{{print $2}}'"
+    result = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE)
     pid = result.stdout.decode("utf-8").strip()
     if pid:
-        cmd = "kill -9 %s" % pid
-        result = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
+        cmd = f"kill -9 {pid}"
+        result = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE)
     return result
 
 
